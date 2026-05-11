@@ -10,7 +10,42 @@ T.ex. hur man loopar eller gör if-satser i JS
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Uppgift 8: Onward</title>
   </head>
-  <body></body>
+  <body>
+    <p id="output"></p>
 
-  <script></script>
+    <script>
+      var text = "";
+
+      // If-sats
+      var age = 20;
+      if (age >= 18) {
+        text += "Du är myndig!<br>";
+      } else {
+        text += "Du är inte myndig.<br>";
+      }
+
+      // For-loop
+      text += "<br>For-loop:<br>";
+      for (var i = 1; i <= 5; i++) {
+        text += "Varv " + i + "<br>";
+      }
+
+      // While-loop
+      text += "<br>While-loop:<br>";
+      var count = 0;
+      while (count < 3) {
+        text += "Count är " + count + "<br>";
+        count++;
+      }
+
+      // Loop över en lista
+      text += "<br>Lista:<br>";
+      var fruits = ["Äpple", "Banan", "Mango"];
+      for (var i = 0; i < fruits.length; i++) {
+        text += fruits[i] + "<br>";
+      }
+
+      document.getElementById("output").innerHTML = text;
+    </script>
+  </body>
 </html>
