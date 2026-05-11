@@ -5,21 +5,66 @@
     Extrauppgift 3: Lägg till en knapp som lägger till en till slider/inputfält som ska ingå i beräkningen
     För extrauppgift 3 krävs getElementsByClass
 -->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Simple Calculator Example</title>
+    <title>Simple Calculator</title>
   </head>
   <body>
-    <input type="text" id="num1" placeholder="Enter number 1" />
-    <input type="text" id="num2" placeholder="Enter number 2" />
-    <br /><br />
-    <button onclick="calculateSum()">+</button>
+    <div id="sliders">
+      <div>
+        <input class="number" type="range" min="0" max="100" value="50" />
+        <span>50</span>
+      </div>
+      <div>
+        <input class="number" type="range" min="0" max="100" value="50" />
+        <span>50</span>
+      </div>
+    </div>
 
-    <p id="result">Result:</p>
+    <br />
+    <select id="operator">
+      <option value="+">+</option>
+      <option value="-">-</option>
+      <option value="*">*</option>
+      <option value="/">/</option>
+    </select>
+    <button onclick="calculate()">Beräkna</button>
+    <button onclick="addSlider()">Lägg till tal</button>
+
+    <p id="result">Resultat:</p>
+
+    <script>
+      // Uppdatera span-värdet när slidern ändras
+      document.getElementById("sliders").addEventListener("input", function (e) {
+        if (e.target.classList.contains("number")) {
+          e.target.nextElementSibling.textContent = e.target.value;
+        }
+      });
+
+      function addSlider() {
+        var div = document.createElement("div");
+        div.innerHTML = '<input class="number" type="range" min="0" max="100" value="50" /> <span>50</span>';
+        document.getElementById("sliders").appendChild(div);
+      }
+
+      function calculate() {
+        var sliders = document.getElementsByClassName("number");
+        var operator = document.getElementById("operator").value;
+        var result = parseFloat(sliders[0].value);
+
+        for (var i = 1; i < sliders.length; i++) {
+          var num = parseFloat(sliders[i].value);
+          if (operator === "+") result += num;
+          else if (operator === "-") result -= num;
+          else if (operator === "*") result *= num;
+          else if (operator === "/") result /= num;
+        }
+
+        document.getElementById("result").textContent = "Resultat: " + result;
+      }
+    </script>
   </body>
-  <script src="simple_calculator.js"></script>
 </html>

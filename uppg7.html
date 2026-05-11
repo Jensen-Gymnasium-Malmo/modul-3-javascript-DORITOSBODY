@@ -18,19 +18,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conditional Statements Example</title>
+    <title>Gissningsspel</title>
 </head>
 <body>
-
-    <label for="numberSlider">Select number</label>
+    <h2>Gissa talet!</h2>
+    <div id="sliders">
+        <div>
+            <input type="range" class="guessSlider" min="0" max="100" value="50">
+            <span>50</span>
+        </div>
+    </div>
     <br>
-    <input type="range" id="valueSlider" min="0" max="100" value="25">
-    <br>
-    <span id="selectedNumber"></span>
-    <br>
+    <button onclick="nyttTal()">Nytt tal</button>
+    <button onclick="addSlider()">Lägg till slider</button>
     <p id="hint"></p>
+    <p id="score">Antal rätta gissningar: 0</p>
 
+    <script>
+        var maxVal = 100;
+        var score = 0;
+        var target = slumpaTal();
 
-    <script src="uppg7.js"></script>
+        function slumpaTal() {
+            return Math.floor(Math.random() * (maxVal + 1));
+        }
+
+        function nyttTal() {
+            target = slumpaTal();
+            document.getElementById("hint").textContent = "Nytt tal valt!";
+        }
+
+        function addSlider() {
+            var div = document.createElement("div");
+            div.innerHTML = '<input type="range" class="guessSlider" min="0" max="' + maxVal + '" value="50"> <span>50</span>';
+            div.querySelector("input").addEventListener("input", handleSlider);
+            document.getElementById("sliders").appendChild(div);
+        }
+
+        function handleSlider(e) {
+            e.target.nextElementSibling.textContent = e.target.value;
+            checkGuess();
+        }
+
+        function checkGuess() {
+            var sliders = document.querySelectorAll(".guessSlider");
+            var hints = [];
+            var allCorrect = true;
+
+            sliders.forEach(function(slider, i) {
+                var val = parseInt(slider.value);
+                if (val < target) {
+                    hints.push("Slider " + (i + 1) + ": för lågt");
+                    allCorrect = false;
+                } else if (val > target) {
+                    hints.push("Slider " + (i + 1) + ": för högt");
+                    allCorrect = false;
+                } else {
+                    hints.push("Slider " + (i + 1) + ": rätt!");
+                }
+            });
+
+            if (allCorrect) {
+                score++;
+                maxVal += 100;
+                document.getElementById("score").textContent = "Antal rätta gissningar: " + score;
+                document.getElementById("hint").textContent = "Rätt! Nytt tal valt, max är nu " + maxVal + "!";
+                target = slumpaTal();
+                document.querySelectorAll(".guessSlider").forEach(function(s) {
+                    s.max = maxVal;
+                    s.value = 50;
+                    s.nextElementSibling.textContent = 50;
+                });
+            } else {
+                document.getElementById("hint").textContent = hints.join(" | ");
+            }
+        }
+
+        document.querySelector(".guessSlider").addEventListener("input", handleSlider);
+    </script>
 </body>
 </html>
